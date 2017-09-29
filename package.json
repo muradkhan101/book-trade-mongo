@@ -1,0 +1,31 @@
+{
+  "name": "book-trade-mongo",
+  "version": "1.0.0",
+  "description": "MongoDB backend for book trading app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muradkhan101/book-trade-mongo.git"
+  },
+  "keywords": [
+    "mongodb",
+    "nosql",
+    "mongoose",
+    "node"
+  ],
+  "author": "Murad Khan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/muradkhan101/book-trade-mongo/issues"
+  },
+  "homepage": "https://github.com/muradkhan101/book-trade-mongo#readme",
+  "dependencies": {
+    "aes-js": "^3.1.0",
+    "jssha": "^2.3.1",
+    "mongoose": "^4.11.13",
+    "uuid": "^3.1.0"
+  }
+}
