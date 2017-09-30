@@ -5,7 +5,7 @@ mongoose.connect(`mongodb://${config.user}:${config.pass}${config.url}`)
 
 const addToDB = (schema, data, cb) => {
   let newData = new schema(data);
-  newData.save(cb)
+  newData.save(cb);
 }
 
 const search = (schema, data, cb) => {
