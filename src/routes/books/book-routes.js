@@ -16,6 +16,6 @@ router.post('/books/trades', );
 
 router.put('/books/trades', );
 
-router.delete('/books/trade', );
+router.delete('/books/trades', );
 
 module.exports = router;
