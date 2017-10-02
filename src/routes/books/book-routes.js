@@ -1,21 +1,20 @@
 const router = require('express').Router();
+const bookInfo = require('./book-info');
+const bookTrades = require('./book-trades');
 
-router.get('/books', );
+router.route('/')
+  .get(bookInfo.getAllBooks)
+  .post(bookInfo.addBook)
 
-router.post('/books', );
+router.route('/:id')
+  .get(bookInfo.getBook)
+  .delete(bookInfo.deleteBook)
+  .put(bookInfo.updateBook)
 
-router.get('/books/:id', );
-
-router.delete('/books/:id', );
-
-router.put('/books/:id', );
-
-router.get('/books/trades', );
-
-router.post('/books/trades', );
-
-router.put('/books/trades', );
-
-router.delete('/books/trades', );
+router.route('/trades')
+  .get(bookTrades.getTrades)
+  .post(bookTrades.addTrade)
+  .put(bookTrades.updateTrade)
+  .delete(bookTrades.deleteTrade)
 
 module.exports = router;

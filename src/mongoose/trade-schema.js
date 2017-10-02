@@ -13,7 +13,7 @@ const Trades = new mongoose.Schema(tradeObject);
 
 const tradeModel = mongoose.model('Trade', Trades, 'TRADES');
 
-export.modules = {
+module.exports = {
   tradeModel,
   tradeObject
 }

@@ -1,17 +1,24 @@
 const router = require('express').Router();
+const userInfo = require('./user-info');
+const userProfile = require('./user-profile');
 
-router.put('/user/authenticate', );
+router.route('/')
+  .post(userProfile.createUser)
+  .put(userProfile.updateUser)
 
-router.get('/user/info', )
+router.route('/authenticate')
+  .post(userProfile.authenticateUser)
 
-router.post('/user/info', );
+router.route('/info')
+  .post(userProfile.getUser)
 
-router.put('/user/info', );
+router.route('/:id/books')
+  .get(userInfo.getUserBooks)
 
-router.get('/user/:id/books', );
+router.route('/:id/trades')
+  .get(userInfo.getUserTrades)
 
-router.get('/user/:id/books/available', );
-
-router.get('/user/:id/trades', );
+// Not necessary to implement at this point
+// router.get('/user/:id/books/available', );
 
 module.exports = router;

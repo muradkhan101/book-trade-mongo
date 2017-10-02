@@ -1,11 +1,12 @@
 const Trade = require('../../mongoose/trade-schema');
-const User = require('../../mongoose/user-schema');
 const mongoose = require('mongoose');
+
+const userInfo = require('../user/user-info');
 
 const getTrades = (req, res) => {
   Trade.tradeModel.find({}, (err, trades) => {
-    if (err) res.status(400).send(err);
-    if (!trades.length) res.status(204).send('No trades found');
+    if (err) return res.status(400).send(err);
+    if (!trades.length) return res.status(204).send('No trades found');
 
     res.status(200).send(trades);
   })
@@ -14,36 +15,34 @@ const getTrades = (req, res) => {
 const addTrade = (req, res) => {
   let newTrade = new Trade.tradeModel(req.body);
   newTrade.save( (err, trade) => {
-    if (err) res.status(400).send(err);
+    if (err) return res.status(400).send(err);
     let _id = trade.id;
-    let user1 = req.body.from;
-    let user2 = req.body.with;
-    User.userModel.findByIdAndUpdate(mongoose.Type.ObjectId(user1), {$push : {trades: mongoose.Type.ObjectId(_id)}}, (err, user) => {
-      if (err) {
-        deleteTrade(req, res);
-        res.status.(400).send(err);
-      }
-    })
-    User.userModel.findByIdAndUpdate(mongoose.Type.ObjectId(user2), {$push : {trades: mongoose.Type.ObjectId(_id)}}, (err, user) => {
-      if (err) {
-        deleteTrade(req, res);
-        res.status.(400).send(err);
-      }
-    })
-    res.status(200).send({});
+    // code structure could be better for addUserTrade and deleteUserTrade
+    userInfo.addUserTrade(_id, req.body.from, res);
+    userInfo.addUserTrade(_id, req.body.with, res);
+    res.status(201).send({});
   })
 }
 
 const updateTrade = (req, res) => {
   Trade.tradeModel.findByIdAndUpdate(mongoose.Type.ObjectId(req.body._id), req.body, (err, book) => {
-    if (err) res.status.(400).send(err);
+    if (err) return res.status(400).send(err);
     res.status(200).send(book);
   })
 }
 
 const deleteTrade = (req, res) => {
   Trade.tradeModel.findByIdAndRemove(mongoose.Type.ObjectId(req.body._id), err => {
-    if (err) res.status.(400).send(err);
+    if (err) return res.status(400).send(err);
+    userInfo.deleteUserTrade(req.body._id, req.body.from, res);
+    userInfo.deleteUserTrade(req.body._id, req.body.with, res);
     res.status(200).send({});
   })
+}
+
+module.exports = {
+  getTrades,
+  addTrade,
+  updateTrade,
+  deleteTrade
 }
