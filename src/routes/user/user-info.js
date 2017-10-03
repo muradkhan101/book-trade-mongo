@@ -24,17 +24,17 @@ const getUserTrades = (req, res) => {
 }
 
 const addUserTrade = (tradeId, userId, res) => {
-  User.userModel.findByIdAndUpdate(mongoose.Type.ObjectId(userId), {$push : {trades: mongoose.Type.ObjectId(tradeId)}}, (err, user) => {
+  User.userModel.findByIdAndUpdate(mongoose.Types.ObjectId(userId), {$push : {trades: mongoose.Types.ObjectId(tradeId)}}, (err, user) => {
     if (err) {
       deleteTrade({req:{body: {_id: tradeId}}}, res);
-      return res.status(400).send(err);
+      console.log(`Error add trade for user ${userId}`)
     }
   })
 }
 
 const deleteUserTrade = (tradeId, userId, res) => {
-  User.userModel.findByIdAndUpdate(mongoose.Type.ObjectId(userId), {$pull: {trades: tradeId}}, (err, user) => {
-    if (err) return res.status(400).send(err);
+  User.userModel.findByIdAndUpdate(mongoose.Types.ObjectId(userId), {$pull: {trades: tradeId}}, (err, user) => {
+    if (err) console.log("Error deleting trade");
   })
 }
 
