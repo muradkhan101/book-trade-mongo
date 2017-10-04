@@ -1,6 +1,7 @@
 const User = require('../../mongoose/user-schema');
 const mongoose = require('mongoose');
 const hash = require('../../assets/hash')
+const jwt = require('../../assets/jwt');
 
 const makeUser = (info) => {
   let salt = hash.makeSalt();
@@ -11,15 +12,16 @@ const makeUser = (info) => {
   return new User.userModel(userObject);
 }
 
-const authenticateUser = (req, res) => {
+const loginUser = (req, res) => {
   User.userModel.findOne({email: req.body.email}, (err, user) => {
     if (err) return res.status(400).send(err);
-    if (!user) return res.status(204).send('Email/Password is incorrect')
+    if (!user) return res.status(403).send('Email/Password is incorrect')
     let password = hash.makeHash(req.body.password + user.salt);
     User.userModel.findOne({email: req.body.email, password: password}, (err, user) => {
       if (err) return res.status(400).send(err);
-      if (!user) return res.status(204).send('Email/Password is incorrect')
-      res.status(200).send('Log-in success!')
+      if (!user) return res.status(403).send('Email/Password is incorrect');
+      let token = jwt.createKey({email: user.email}, {expiresInMinutes: 2880})
+      res.status(200).json({token: token})
     })
   })
 }
@@ -81,7 +83,7 @@ const deleteUser = (req, res) => {
 }
 
 module.exports = {
-  authenticateUser,
+  loginUser,
   createUser,
   getUser,
   updateUser,
