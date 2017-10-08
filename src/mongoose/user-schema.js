@@ -6,6 +6,7 @@ const userObject = {
   email      : { type: String, required: true },
   password   : { type: String, required: true },
   salt       : { type: String, required: true },
+  uuid       : { type: String, required: true },
   books      : { type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book'}], default: [] },
   trades     : { type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Trade'}], default: [] }
 };

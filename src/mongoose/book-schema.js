@@ -5,6 +5,7 @@ const bookObject = {
   author      : { type: String, required: true },
   image       : { type: String, default: "source.unsplash.com/featured?book" },
   description : { type: String, required: true },
+  uuid        : { type: String, requiredL true },
   published   : Date
 }
 

@@ -12,3 +12,7 @@ const authenticateUser = (req, res, next) => {
     return res.status(403).send('No token provided');
   }
 }
+
+module.exports = {
+  authenticateUser
+}

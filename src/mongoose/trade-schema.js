@@ -6,6 +6,7 @@ const tradeObject = {
   wantBook  : { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Book' },
   offerBook : { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Book' },
   status    : { type: String, default: "Open" },
+  uuid      : { type: String, required: true },
   completed : Date
 }
 

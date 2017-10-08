@@ -1,6 +1,5 @@
 const uuidv4 = require('uuid/v4');
 const aesjs = require('aes-js');
-
 const key = require('../config/hash.json').key;
 
 const makeSalt = () => {

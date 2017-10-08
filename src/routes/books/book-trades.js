@@ -1,6 +1,6 @@
 const Trade = require('../../mongoose/trade-schema');
 const mongoose = require('mongoose');
-
+const genUUID = require('../../assets/uuid');
 const userInfo = require('../user/user-info');
 
 const getTrades = (req, res) => {
@@ -14,7 +14,8 @@ const getTrades = (req, res) => {
 
 const addTrade = (req, res) => {
   try {
-    let newTrade = new Trade.tradeModel(req.body);
+    let tradeData = Object.assign({}, req.body, { uuid: genUUID() });
+    let newTrade = new Trade.tradeModel(tradeData);
     newTrade.save( (err, trade) => {
       if (err) return res.status(400).send(err);
       let _id = trade.id;
@@ -29,14 +30,14 @@ const addTrade = (req, res) => {
 }
 
 const updateTrade = (req, res) => {
-  Trade.tradeModel.findByIdAndUpdate(mongoose.Types.ObjectId(req.body._id), req.body, (err, book) => {
+  Trade.tradeModel.findOneAndUpdate({uuid: req.body._id}, req.body, (err, book) => {
     if (err) return res.status(400).send(err);
     res.status(200).send(book);
   })
 }
 
 const deleteTrade = (req, res) => {
-  Trade.tradeModel.findByIdAndRemove(mongoose.Types.ObjectId(req.body._id), err => {
+  Trade.tradeModel.findOneAndRemove({uuid: req.body.uuid}, err => {
     if (err) return res.status(400).send(err);
     userInfo.deleteUserTrade(req.body._id, req.body.from, res);
     userInfo.deleteUserTrade(req.body._id, req.body.with, res);
