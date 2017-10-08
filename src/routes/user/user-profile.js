@@ -2,12 +2,14 @@ const User = require('../../mongoose/user-schema');
 const mongoose = require('mongoose');
 const hash = require('../../assets/hash')
 const jwt = require('../../assets/jwt');
+const genUUID = require('../../assets/uuid');
 
 const makeUser = (info) => {
   let salt = hash.makeSalt();
   let userObject = Object.assign({}, info, {
     salt: salt,
-    password: hash.makeHash(info.password+salt)
+    password: hash.makeHash(info.password+salt),
+    uuid: genUUID()
   })
   if (userObject.validatePassword) delete userObject.validatePassword;
   return new User.userModel(userObject);

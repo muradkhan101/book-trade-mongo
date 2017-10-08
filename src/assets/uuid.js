@@ -1,6 +1,6 @@
 const uuidv1 = require('uuid/v1');
 
-const genUUID() {
+const genUUID = () => {
   let temp = uuidv1().split('-');
   let l = temp.length;
   let randInt = Math.floor( Math.random() * (l - 2) ) + 1;
