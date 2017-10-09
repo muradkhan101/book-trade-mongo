@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
 const bookObject = {
-  title       : { type: String, required: true },
-  author      : { type: String, required: true },
+  title       : { type: String, required: false },
+  author      : { type: String, required: false },
   image       : { type: String, default: "source.unsplash.com/featured?book" },
-  description : { type: String, required: true },
-  uuid        : { type: String, requiredL true },
-  published   : Date
+  description : { type: String, required: false },
+  uuid        : { type: String, required: false },
+  published   : String
 }
 
 const Books = new mongoose.Schema(bookObject);
