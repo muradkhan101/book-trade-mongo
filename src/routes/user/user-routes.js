@@ -16,10 +16,14 @@ router.route('/login')
 router.route('/info')
   .post(userProfile.getUser)
 
-router.route('/:id/books')
+router.route('/:uuid/books')
   .get(userInfo.getUserBooks)
+  .post(userInfo.addUserBook)
+// router.route('/:id/books/:book')
+router.route('/:uuid/books/:_id')
+  .delete(userInfo.removeUserBook)
 
-router.route('/:id/trades')
+router.route('/:uuid/trades')
   .get(userInfo.getUserTrades)
 
 // Not necessary to implement at this point

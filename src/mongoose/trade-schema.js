@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const tradeObject = {
   from      : { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
-  with      : { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
-  wantBook  : { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Book' },
+  with      : { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  wantBook  : { type: mongoose.Schema.Types.ObjectId, ref: 'Book' },
   offerBook : { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Book' },
   status    : { type: String, default: "Open" },
   uuid      : { type: String, required: true },

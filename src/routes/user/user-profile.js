@@ -80,7 +80,6 @@ const trimUser = (userQuery) => {
   let user = userQuery.toObject();
   delete user["password"];
   delete user["salt"];
-  delete user["_id"];
   return user;
 }
 module.exports = {

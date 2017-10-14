@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const bookInfo = require('./book-info');
-const bookTrades = require('./book-trades');
+const tradeGet = require('./trade-get');
+//books
 
 router.route('/')
   .get(bookInfo.getAllBooks)
@@ -11,10 +12,7 @@ router.route('/:id')
   .delete(bookInfo.deleteBook)
   .put(bookInfo.updateBook)
 
-router.route('/trades')
-  .get(bookTrades.getTrades)
-  .post(bookTrades.addTrade)
-  .put(bookTrades.updateTrade)
-  .delete(bookTrades.deleteTrade)
+  router.route('/:bookId/trades')
+    .get(tradeGet.tradesByBook)
 
 module.exports = router;

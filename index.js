@@ -9,6 +9,7 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: true }));
 app.use(require('./src/assets/logger-middleware'));
 
 // Routing

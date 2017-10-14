@@ -11,7 +11,6 @@ const app = express();
 require('./src/mongoose/connect')();
 
 app.get('/', (req, res) => {
-  console.log('GOTTEM');
   let promises = queries.map( e => {
     return request(baseURL+e).then(result => {
       let books = [];

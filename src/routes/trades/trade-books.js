@@ -3,18 +3,27 @@ const mongoose = require('mongoose');
 const genUUID = require('../../assets/uuid');
 const userInfo = require('../user/user-info');
 
-const getTrades = (req, res) => {
-  Trade.tradeModel.find({}, (err, trades) => {
-    if (err) return res.status(400).send(err);
-    if (!trades.length) return res.status(204).send('No trades found');
-
-    res.status(200).send(trades);
-  })
+const getOpenTrades = (req, res) => {
+  Trade.tradeModel
+    .find({status: "Open"})
+    .populate('offerBook', 'title image uuid')
+    .populate('from', 'uuid firstName lastName')
+    .exec( (err, trades) => {
+      if (err) return res.status(400).send(err);
+      if (!trades.length) return res.status(204).send('No trades found');
+      res.status(200).send(trades);
+    })
 }
 
 const addTrade = (req, res) => {
   try {
-    let tradeData = Object.assign({}, req.body, { uuid: genUUID() });
+    let tradeData = {
+      from : mongoose.Types.ObjectId(req.body.from),
+      offerBook : mongoose.Types.ObjectId(req.body.offerBook),
+      uuid: genUUID(),
+      status: "Open"
+    }
+    if (req.body.wantBook) tradeData.wantBook = mongoose.Types.ObjectId(req.body.wantBook);
     let newTrade = new Trade.tradeModel(tradeData);
     newTrade.save( (err, trade) => {
       if (err) return res.status(400).send(err);
@@ -32,6 +41,7 @@ const addTrade = (req, res) => {
 const updateTrade = (req, res) => {
   Trade.tradeModel.findOneAndUpdate({uuid: req.body._id}, req.body, (err, book) => {
     if (err) return res.status(400).send(err);
+    if (!book) return res.status(204).send();
     res.status(200).send(book);
   })
 }
@@ -46,7 +56,7 @@ const deleteTrade = (req, res) => {
 }
 
 module.exports = {
-  getTrades,
+  getOpenTrades,
   addTrade,
   updateTrade,
   deleteTrade
