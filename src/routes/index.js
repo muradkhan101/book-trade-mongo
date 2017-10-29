@@ -6,4 +6,7 @@ module.exports = (app) => {
   app.use('/user', userRoutes);
   app.use('/books', bookRoutes);
   app.use('/trades', tradeRoutes);
+  app.get('*', (req, res) => {
+    res.redirect('/')
+  })
 }
