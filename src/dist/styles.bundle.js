@@ -77,7 +77,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\n\n.full-height {min-height: 100vh;}\n.no-padding {padding: 0 !important;}\n", ""]);
+exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\n\n.full-height {min-height: 100vh;}\n.no-padding {padding: 0 !important;}\n@media (max-width: 767px) {\n  .full-height {min-height: auto;}\n}\n", ""]);
 
 // exports
 

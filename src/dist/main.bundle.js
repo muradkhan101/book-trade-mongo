@@ -162,7 +162,7 @@ var AlertService = (function () {
         this.subject.next({ type: 'error', text: message });
     };
     AlertService.prototype.retrieveMessage = function () {
-        return this.subject.asObservable();
+        return this.subject;
     };
     return AlertService;
 }());
@@ -404,7 +404,7 @@ AppModule = __decorate([
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return baseURL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return headers; });
-var baseURL = 'http://localhost:3000';
+var baseURL = 'https://lit-coast-89424.herokuapp.com/';
 var headers = new Headers({ 'Content-Type': 'application/json, */*' });
 //# sourceMappingURL=config.js.map
 
@@ -529,7 +529,8 @@ var BookInfoComponent = (function () {
     BookInfoComponent.prototype.showModal = function () {
         var _this = this;
         if (!this.bookManagement.isAuthenticated())
-            this.bookManagement.redirect('login');
+            return this.bookManagement.redirect('login');
+        eval('$("#main-modal").modal("show")');
         this.libraryService.getBooks('main')
             .subscribe(function (books) {
             _this.book$.subscribe(function (data) {
@@ -558,7 +559,7 @@ __decorate([
 BookInfoComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'book-info',
-        template: "\n  <div ngClass='book-display container' *ngIf=\"book$ | async as book\">\n    <alert></alert>\n    <div ngClass='row justify-content-center'>\n      <div ngClass='col-3'>\n        <img [src]=\"book.image\" ngClass='book-cover'>\n        <button *ngIf=\"!hasBook\" ngClass=\"btn btn-primary mt-2\" (click)=\"addToCollection(book._id)\">Add to Collection</button>\n        <button *ngIf=\"hasBook\" ngClass=\"btn btn-danger mt-2\" (click)=\"removeFromCollection(book._id)\">Remove from Collection</button>\n        <button ngClass=\"btn btn-alt mt-2 mb-2\" (click)=\"showModal()\" data-toggle=\"modal\" data-target=\"#main-modal\">Trade This</button>\n      </div>\n      <div ngClass='col'>\n        <div>\n          <h1 ngClass='card-title'>{{book.title}}</h1>\n          <p ngClass='card-text'>{{book.description}}</p>\n        </div>\n      </div>\n    </div>\n    <div ngClass='row'>\n      <trades title=\"Trade For This\" [bookId]=\"book._id\"></trades>\n    </div>\n  </div>\n",
+        template: "\n  <div ngClass='book-display container' *ngIf=\"book$ | async as book\">\n    <alert></alert>\n    <div ngClass='row justify-content-center'>\n      <div ngClass='col-4 col-md-3'>\n        <img [src]=\"book.image\" ngClass='book-cover'>\n        <button *ngIf=\"!hasBook\" ngClass=\"btn btn-primary mt-2\" (click)=\"addToCollection(book._id)\">Add to Collection</button>\n        <button *ngIf=\"hasBook\" ngClass=\"btn btn-danger mt-2\" (click)=\"removeFromCollection(book._id)\">Remove from Collection</button>\n        <button ngClass=\"btn btn-secondary mt-2 mb-2\" (click)=\"showModal()\" data-toggle=\"modal\">Trade This</button>\n      </div>\n      <div ngClass='col'>\n        <div>\n          <h1 ngClass='card-title'>{{book.title}}</h1>\n          <p ngClass='card-text'>{{book.description}}</p>\n        </div>\n      </div>\n    </div>\n    <div ngClass='row'>\n      <trades title=\"Trade For This\" [bookId]=\"book._id\"></trades>\n    </div>\n  </div>\n",
         styles: ["\n  book-cover { width: 100px; height: 100px;}\n"],
         animations: [__WEBPACK_IMPORTED_MODULE_3__app_animations__["a" /* slideInDownAnimation */]]
     }),
@@ -1186,7 +1187,7 @@ var UserAuthenticationService = UserAuthenticationService_1 = (function () {
     UserAuthenticationService.prototype.redirect = function (url) {
         UserAuthenticationService_1.redirectUrl = this.router.url;
         this.alert.error('You must login first', true);
-        this.router.navigate([url]);
+        return this.router.navigate([url]);
     };
     UserAuthenticationService.prototype.jwt = function () {
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -1711,17 +1712,21 @@ var TradeAcceptComponent = (function () {
         this.trades = trades;
     }
     TradeAcceptComponent.prototype.createForm = function () {
-        this.tradeAcceptForm = this.fb.group({
-            offerBook: [this.data.trade.offerBook._id || '', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* Validators */].required],
-            wantBook: [this.data.trade.wantBook._id || '', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* Validators */].required],
-            with: [JSON.parse(localStorage.getItem('currentUser'))._id || '', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* Validators */].required],
-            status: ["Closed"],
-            uuid: [this.data.trade.uuid || '']
-        });
+        try {
+            this.tradeAcceptForm = this.fb.group({
+                offerBook: [this.data.trade.offerBook._id || '', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* Validators */].required],
+                wantBook: [this.data.trade.wantBook._id || '', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* Validators */].required],
+                with: [JSON.parse(localStorage.getItem('currentUser'))._id || '', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* Validators */].required],
+                status: ["Closed"],
+                uuid: [this.data.trade.uuid || '']
+            });
+        }
+        catch (e) {
+            console.log(e);
+        }
     };
     TradeAcceptComponent.prototype.ngOnInit = function () {
         var _this = this;
-        console.log(this.data);
         if (!this.trades.isAuthenticated()) {
             this.trades.redirect('/login');
         }
@@ -1972,6 +1977,7 @@ var _a, _b, _c;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modal_modal_content_service__ = __webpack_require__("../../../../../src/modal/modal-content.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__trades_trade_accept_component__ = __webpack_require__("../../../../../src/trades/trade-accept.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__books_library_service__ = __webpack_require__("../../../../../src/books/library.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__global_services_user_authentication_service__ = __webpack_require__("../../../../../src/global_services/user-authentication.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1986,13 +1992,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var TradeViewComponent = (function () {
-    function TradeViewComponent(modalService, libraryService) {
+    function TradeViewComponent(modalService, libraryService, userAuthentication) {
         this.modalService = modalService;
         this.libraryService = libraryService;
+        this.userAuthentication = userAuthentication;
     }
     TradeViewComponent.prototype.showModal = function () {
         var _this = this;
+        if (!this.userAuthentication.isAuthenticated())
+            return this.userAuthentication.redirect('login');
+        eval('$("#main-modal").modal("show")');
         this.libraryService.getBooks('')
             .subscribe(function (books) {
             var data = {
@@ -2011,12 +2022,12 @@ __decorate([
 TradeViewComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'trade-view',
-        template: "\n  <div ngClass=\"container-fluid trade\">\n    <div ngClass=\"row justify-content-center\">\n      <div ngClass='col-12 col-md-6 mt-2 align-items-center'>\n        <div ngClass=\"offerBook\">\n          <img src=\"{{trade.offerBook.image}}\" alt=\"{{trade.offerBook.title}}\">\n        </div>\n        <div *ngIf=\"trade.wantBook\" ngClass=\"wantBook\">\n          <img src=\"{{trade.wantBook.image}}\" alt=\"{{trade.wantBook.title}}\">\n        </div>\n      </div>\n    </div>\n    <div ngClass=\"row justify-content-center\">\n      <div ngClass='col-12 col-md-6'>\n        <button ngClass=\"btn btn-primary mt-2 mb-2\" (click)=\"showModal()\" data-toggle=\"modal\" data-target=\"#main-modal\">Offer Trade</button>\n      </div>\n    </div>\n  </div>\n  "
+        template: "\n  <div ngClass=\"container-fluid trade\">\n    <div ngClass=\"row justify-content-center\">\n      <div ngClass='col-12 col-md-6 mt-2 align-items-center'>\n        <div ngClass=\"offerBook\">\n          <img src=\"{{trade.offerBook.image}}\" alt=\"{{trade.offerBook.title}}\">\n        </div>\n        <div *ngIf=\"trade.wantBook\" ngClass=\"wantBook\">\n          <img src=\"{{trade.wantBook.image}}\" alt=\"{{trade.wantBook.title}}\">\n        </div>\n      </div>\n    </div>\n    <div ngClass=\"row justify-content-center\">\n      <div ngClass='col-12 col-md-6'>\n        <button ngClass=\"btn btn-primary mt-2 mb-2\" (click)=\"showModal()\" data-toggle=\"modal\">Offer Trade</button>\n      </div>\n    </div>\n  </div>\n  "
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__modal_modal_content_service__["a" /* ModalContentService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__modal_modal_content_service__["a" /* ModalContentService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__books_library_service__["a" /* LibraryService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__books_library_service__["a" /* LibraryService */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__modal_modal_content_service__["a" /* ModalContentService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__modal_modal_content_service__["a" /* ModalContentService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__books_library_service__["a" /* LibraryService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__books_library_service__["a" /* LibraryService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_5__global_services_user_authentication_service__["a" /* UserAuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__global_services_user_authentication_service__["a" /* UserAuthenticationService */]) === "function" && _d || Object])
 ], TradeViewComponent);
 
-var _a, _b, _c;
+var _a, _b, _c, _d;
 //# sourceMappingURL=trade-view.component.js.map
 
 /***/ }),
